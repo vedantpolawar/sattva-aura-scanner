@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import Scanner from "./pages/Scanner";
 import Dashboard from "./pages/Dashboard";
 import ProductDetails from "./pages/ProductDetails";
+import Catalog from "./pages/Catalog";
+import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 import Navigation from "./components/Navigation";
 import ChatBot from "./components/ChatBot";
@@ -23,6 +25,8 @@ const App = () => (
           <Navigation />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/catalog" element={<Catalog />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path="/scanner" element={<Scanner />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/product/:productId" element={<ProductDetails />} />

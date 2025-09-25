@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Leaf, QrCode, MessageCircle, User, Menu, X } from "lucide-react";
+import { Leaf, QrCode, User, Menu, X, ShoppingBag, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -12,9 +12,10 @@ const Navigation = () => {
 
   const navItems = [
     { path: "/", label: "Home", icon: Leaf },
+    { path: "/catalog", label: "Products", icon: Store },
+    { path: "/cart", label: "Cart", icon: ShoppingBag },
     { path: "/scanner", label: "Scan QR", icon: QrCode },
     { path: "/dashboard", label: "Dashboard", icon: User },
-    { path: "/chat", label: "Sattva Bot", icon: MessageCircle },
   ];
 
   return (

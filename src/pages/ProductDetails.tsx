@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -15,11 +16,17 @@ import {
   Truck,
   Users,
   BarChart3,
-  CheckCircle
+  CheckCircle,
+  ShoppingCart,
+  Plus,
+  Minus,
+  Star
 } from "lucide-react";
 
 const ProductDetails = () => {
   const { productId } = useParams();
+  const [quantity, setQuantity] = useState(1);
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("journey");
 
   // Mock product data - would come from blockchain API
@@ -29,6 +36,14 @@ const ProductDetails = () => {
     batchId: "TUR-2024-001234",
     verified: true,
     sustainabilityScore: 95,
+    price: 28.99,
+    originalPrice: 34.99,
+    rating: 4.9,
+    reviews: 156,
+    inStock: true,
+    stockCount: 25,
+    category: "Root Powder",
+    weight: "200g",
     farmer: {
       name: "Rajesh Kumar",
       farm: "Green Valley Farms",
@@ -89,6 +104,20 @@ const ProductDetails = () => {
     ]
   };
 
+  const addToCart = () => {
+    toast({
+      title: "Added to Cart",
+      description: `${quantity} x ${product.name} added to your cart.`,
+    });
+  };
+
+  const buyNow = () => {
+    toast({
+      title: "Redirecting to Checkout", 
+      description: "Taking you to secure checkout...",
+    });
+  };
+
   const tabs = [
     { id: "journey", label: "Supply Chain Journey", icon: Truck },
     { id: "farmer", label: "Farmer Details", icon: Users },
@@ -125,6 +154,98 @@ const ProductDetails = () => {
               <span className="text-sm text-muted-foreground">Sustainability:</span>
               <Progress value={product.sustainabilityScore} className="w-20 h-2" />
               <span className="text-sm font-medium">{product.sustainabilityScore}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Product Purchase Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div>
+          <img
+            src="/placeholder.svg"
+            alt={product.name}
+            className="w-full h-96 object-cover rounded-lg shadow-soft"
+          />
+        </div>
+        
+        <div className="space-y-6">
+          <div>
+            <div className="flex items-center gap-4 mb-4">
+              <div className="flex items-center">
+                <Star className="w-5 h-5 fill-gold text-gold" />
+                <span className="ml-1 font-medium">{product.rating}</span>
+              </div>
+              <span className="text-muted-foreground">({product.reviews} reviews)</span>
+              <Badge variant="outline" className="bg-sage/10 text-sage border-sage/20">
+                <Leaf className="w-3 h-3 mr-1" />
+                Organic Certified
+              </Badge>
+            </div>
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-3xl font-bold text-foreground">${product.price}</span>
+              <span className="text-lg text-muted-foreground line-through">${product.originalPrice}</span>
+              <Badge className="bg-sage text-foreground">Save ${(product.originalPrice - product.price).toFixed(2)}</Badge>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-muted-foreground" />
+              <span className="text-muted-foreground">Origin: {product.farmer.location}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-5 h-5 text-sage" />
+              <span className="text-muted-foreground">
+                {product.inStock ? `In Stock (${product.stockCount} available)` : "Out of Stock"}
+              </span>
+            </div>
+          </div>
+
+          {/* Quantity and Purchase */}
+          <div className="space-y-4 p-4 bg-muted/30 rounded-lg">
+            <div className="flex items-center gap-4">
+              <span className="font-medium">Quantity:</span>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  disabled={quantity <= 1}
+                >
+                  <Minus className="w-4 h-4" />
+                </Button>
+                <span className="min-w-[3rem] text-center font-medium">{quantity}</span>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setQuantity(Math.min(product.stockCount, quantity + 1))}
+                  disabled={quantity >= product.stockCount}
+                >
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button 
+                className="flex-1" 
+                size="lg"
+                onClick={addToCart}
+                disabled={!product.inStock}
+              >
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                Add to Cart - ${(product.price * quantity).toFixed(2)}
+              </Button>
+              <Button 
+                variant="outline" 
+                className="flex-1" 
+                size="lg"
+                onClick={buyNow}
+                disabled={!product.inStock}
+              >
+                Buy Now
+              </Button>
             </div>
           </div>
         </div>

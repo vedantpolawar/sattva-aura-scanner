@@ -118,11 +118,16 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-12 space-x-4">
             <Button asChild variant="hero" size="lg">
-              <Link to="/scanner">
-                Get Started Now
+              <Link to="/catalog">
+                Shop Products
                 <ArrowRight className="w-5 h-5 ml-2" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <Link to="/scanner">
+                Scan QR Code
               </Link>
             </Button>
           </div>
@@ -148,6 +153,12 @@ const Index = () => {
             <div>
               <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
               <div className="space-y-2">
+                <Link to="/catalog" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                  Products
+                </Link>
+                <Link to="/cart" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                  Cart
+                </Link>
                 <Link to="/scanner" className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                   QR Scanner
                 </Link>
